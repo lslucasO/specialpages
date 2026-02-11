@@ -21,7 +21,7 @@
     <header class="topbar">
         <div class="topbar__inner">
             <a class="brand" href="#inicio">
-                <img class="brand__mark" src="public/assets/portfolio/logo.png" alt="Simbolo SpecialPages" loading="eager">
+                <img class="brand__mark" src="/assets/portfolio/logo.png" alt="Simbolo SpecialPages" loading="eager">
             </a>
             <nav id="primary-nav" aria-label="Navegacao principal">
                 <a href="#inicio">Inicio</a>
@@ -73,76 +73,39 @@
             </div>
         </section>
 
-        <section class="metrics" data-scene>
-            <div class="section-scene section-scene--metrics" aria-hidden="true">
-                <span class="shape shape--ring shape--metrics-b" data-shape data-depth="10"></span>
-            </div>
-            <div class="container metrics__grid">
-                <article class="metric reveal">
-                    <h3><span data-counter="120">0</span>+</h3>
-                    <p>Projetos Entregues</p>
-                </article>
-                <article class="metric reveal">
-                    <h3><span data-counter="7">0</span>d</h3>
-                    <p>Prazo Garantido</p>
-                </article>
-                <article class="metric reveal">
-                    <h3><span data-counter="96">0</span>%</h3>
-                    <p>Clientes Satisfeitos</p>
-                </article>
-                <article class="metric reveal">
-                    <h3><span data-counter="42">0</span>%</h3>
-                    <p>Crescimento em Leads</p>
-                </article>
-            </div>
-        </section>
-
         <section class="services" id="servicos" data-scene>
             <div class="section-scene section-scene--services" aria-hidden="true">
                 <span class="shape shape--orb shape--services-a" data-shape data-depth="14"></span>
+                <span class="shape shape--orb shape--services-b" data-shape data-depth="11"></span>
                 <span class="shape shape--ring shape--services-c" data-shape data-depth="9"></span>
             </div>
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="section-kicker">Serviços Profissionais</p>
-                    <h2>Sua empresa merece um site que transmita confiança e autoridade em cada detalhe.</h2>
-                </div>
-
-                <div class="services__grid">
-                    <article class="service-card reveal tilt" data-tilt>
-                        <span class="service-card__index">01</span>
-                        <h3>Clareza e Alinhamento</h3>
-                        <p>Sua mensagem transmitida de forma direta e profissional para o público certo.</p>
-                    </article>
-                    <article class="service-card reveal tilt" data-tilt>
-                        <span class="service-card__index">02</span>
-                        <h3>Experiência do Usuário</h3>
-                        <p>Criamos sites intuitivos que guiam o visitante de forma natural até o contato.</p>
-                    </article>
-                    <article class="service-card reveal tilt" data-tilt>
-                        <span class="service-card__index">03</span>
-                        <h3>Design Exclusivo</h3>
-                        <p>Identidade visual única para destacar sua marca e seus diferenciais no mercado.</p>
-                    </article>
-                    <article class="service-card reveal tilt" data-tilt>
-                        <span class="service-card__index">04</span>
-                        <h3>Alta Performance</h3>
-                        <p>Sites rápidos e otimizados, perfeitos para blogs, vendas ou presença institucional.</p>
-                    </article>
+                <div class="services__layout reveal">
+                    <div class="section-head">
+                        <p class="section-kicker">Serviços Profissionais</p>
+                        <h2>Sua empresa merece um site que transmita confiança e autoridade em cada detalhe.</h2>
+                    </div>
+                    <p class="services__description">
+                        Desenvolvemos experiências digitais sob medida para destacar seu posicionamento, fortalecer
+                        sua marca e converter visitantes em clientes.
+                    </p>
+                    <div class="services__image-placeholder" aria-label="Espaço para inserir imagem">
+                        <span class="logo-orbit logo-orbit--outer" aria-hidden="true"></span>
+                        <span class="logo-orbit logo-orbit--inner" aria-hidden="true"></span>
+                        <span class="logo-particle logo-particle--one" aria-hidden="true"></span>
+                        <span class="logo-particle logo-particle--two" aria-hidden="true"></span>
+                        <span class="logo-particle logo-particle--three" aria-hidden="true"></span>
+                        <img src="/assets/portfolio/logo.png" alt="Logo SpecialPages">
+                    </div>
                 </div>
             </div>
         </section>
-
-        <section class="impact-banner reveal" aria-label="Banner de impacto">
-            <div class="container impact-banner__inner">
-                <p>O sucesso do seu próximo projeto começa com uma presença digital profissional e bem estruturada.</p>
-                <a class="btn" href="#contato">Solicitar um Orçamento</a>
-            </div>
-        </section>
-
+        
         <section class="portfolio" id="portfolio" data-scene>
             <div class="section-scene section-scene--portfolio" aria-hidden="true">
+                <span class="shape shape--ring shape--portfolio-a" data-shape data-depth="12"></span>
                 <span class="shape shape--orb shape--portfolio-b" data-shape data-depth="10"></span>
+                <span class="shape shape--orb shape--portfolio-c" data-shape data-depth="8"></span>
             </div>
             <div class="container">
                 <div class="section-head reveal">
@@ -154,7 +117,7 @@
                     <article class="project-card tilt reveal" data-tilt>
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="assets/portfolio/site-institucional.png"
+                            <img class="project-media__img" src="/assets/portfolio/site-institucional.png"
                                 alt="Preview do projeto Atlas Corporate" loading="lazy">
                             <span class="project-media__badge">Site Institucional</span>
                         </figure>
@@ -169,14 +132,14 @@
                     <article class="project-card tilt reveal" data-tilt>
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="assets/portfolio/site-vendas.png"
+                            <img class="project-media__img" src="/assets/portfolio/site-blog.png"
                                 alt="Preview do projeto Funnel Spark" loading="lazy">
-                            <span class="project-media__badge">Landing Page</span>
+                            <span class="project-media__badge">Blog</span>
                         </figure>
                         <div class="project-card__content">
-                            <p class="project-card__tag">Landing Pages de Conversão</p>
-                            <h3>Funnel Spark</h3>
-                            <p>Páginas objetivas desenhadas para destacar sua oferta e facilitar o contato do cliente.
+                            <p class="project-card__tag">Página de Blog</p>
+                            <h3>SuaReceita</h3>
+                            <p>Mostra receitas em destaque e as mais recentes com foto, e ainda oferece cardápio da semana, dicas e uma lista de compras pra baixar.
                             </p>
                         </div>
                     </article>
@@ -184,7 +147,7 @@
                     <article class="project-card tilt reveal" data-tilt>
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="assets/portfolio/site-especialistas.png"
+                            <img class="project-media__img" src="/assets/portfolio/site-especialistas.png"
                                 alt="Preview do projeto Authority One" loading="lazy">
                             <span class="project-media__badge">Especialistas</span>
                         </figure>
@@ -198,8 +161,19 @@
             </div>
         </section>
 
+
+
+        <section class="impact-banner reveal" aria-label="Banner de impacto">
+            <div class="container impact-banner__inner">
+                <p>O sucesso do seu próximo projeto começa com uma presença digital profissional e bem estruturada.</p>
+                <a class="btn" href="#contato">Solicitar um Orçamento</a>
+            </div>
+        </section>
+
+        
         <section class="process" id="processo" data-scene>
             <div class="section-scene section-scene--process" aria-hidden="true">
+                <span class="shape shape--orb shape--process-a" data-shape data-depth="10"></span>
                 <span class="shape shape--ring shape--process-b" data-shape data-depth="8"></span>
             </div>
             <div class="container">
@@ -235,52 +209,64 @@
         <section class="contact" id="contato" data-scene>
             <div class="section-scene section-scene--contact" aria-hidden="true">
                 <span class="shape shape--orb shape--contact-a" data-shape data-depth="12"></span>
+                <span class="shape shape--orb shape--contact-b" data-shape data-depth="9"></span>
                 <span class="shape shape--ring shape--contact-c" data-shape data-depth="7"></span>
             </div>
             <div class="container contact__grid">
                 <div class="contact__content reveal tilt" data-tilt>
-                    <p class="section-kicker">Vamos conversar?</p>
-                    <h2>Conte-nos sobre o seu projeto e receba uma proposta personalizada.</h2>
-                    <p>Estamos prontos para criar o site, blog ou landing page que o seu negócio precisa.</p>
+                    <p class="section-kicker">Contato Direto</p>
+                    <h2>Fale comigo por WhatsApp ou Instagram.</h2>
+                    <p>Use o canal que preferir para tirar dúvidas e pedir orçamento para o seu próximo projeto.</p>
                     <div class="contact__highlights">
+                        <span>Resposta Rápida</span>
                         <span>Atendimento Personalizado</span>
-                        <span>Briefing Detalhado</span>
-                        <span>Foco no seu Sucesso</span>
+                        <span>Orçamento Sem Complicação</span>
                     </div>
                 </div>
 
-                <form class="contact-form reveal" id="contact-form">
-                    <label>
-                        Nome
-                        <input type="text" name="nome" placeholder="Seu nome" required>
-                    </label>
-                    <label>
-                        E-mail
-                        <input type="email" name="email" placeholder="voce@empresa.com" required>
-                    </label>
-                    <label>
-                        Tipo de pagina
-                        <select name="tipo" required>
-                            <option value="">Selecione</option>
-                            <option value="Site Institucional">Site Institucional</option>
-                            <option value="Site de Vendas">Site de Vendas</option>
-                            <option value="Especialistas">Especialistas</option>
-                        </select>
-                    </label>
-                    <label class="field--full">
-                        Objetivo do projeto
-                        <textarea name="mensagem" rows="4" placeholder="Descreva sua meta e prazo." required></textarea>
-                    </label>
-                    <button type="submit" class="btn">Enviar por e-mail</button>
-                    <p class="form-message" id="form-message" aria-live="polite"></p>
-                </form>
+                <div class="contact-channels reveal" aria-label="Canais de contato">
+                    <a class="contact-channel contact-channel--whatsapp"
+                        href="https://wa.me/5581985969168?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento."
+                        target="_blank" rel="noopener noreferrer">
+                        <div class="contact-channel__top">
+                            <span class="contact-channel__icon" aria-hidden="true">
+                                <!-- Suba sua logo em public/assets/portfolio/whatsapp-logo.svg -->
+                                <img class="contact-channel__icon-image" src="/assets/portfolio/whatsapp-logo-site.png"
+                                    alt="">
+                            </span>
+                            <span class="contact-channel__pill">Online no WhatsApp</span>
+                        </div>
+                        <p class="contact-channel__label">WhatsApp</p>
+                        <p class="contact-channel__value">Entre em contato!</p>
+                        <span class="contact-channel__meta">Toque para iniciar a conversa</span>
+                        <span class="contact-channel__cta">Abrir conversa</span>
+                    </a>
+                    <a class="contact-channel contact-channel--instagram" href="https://www.instagram.com/specpages/"
+                        target="_blank" rel="noopener noreferrer">
+                        <div class="contact-channel__top">
+                            <span class="contact-channel__icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                                    <circle cx="12" cy="12" r="4"></circle>
+                                    <circle class="contact-channel__dot" cx="17.2" cy="6.8" r="1.1"></circle>
+                                </svg>
+                            </span>
+                            <span class="contact-channel__pill">Perfil ativo no Instagram</span>
+                        </div>
+                        <p class="contact-channel__label">Instagram</p>
+                        <p class="contact-channel__value">@specpages</p>
+                        <span class="contact-channel__meta">Envie uma mensagem no direct</span>
+                        <span class="contact-channel__cta">Abrir perfil</span>
+                    </a>
+                    <p class="contact-channels__note">Atendimento por WhatsApp e Instagram.</p>
+                </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
         <div class="container footer__inner">
-            <img class="footer__logo" src="public/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy">
+            <img class="footer__logo" src="/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy">
             <p>SpecialPages © 2026. Profissionalizando marcas com sites de alto padrão.</p>
             <a href="#inicio">Voltar ao topo</a>
         </div>

@@ -1,6 +1,5 @@
 (() => {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const CONTACT_EMAIL = "lslucaslemos@gmail.com";
   const THEME_STORAGE_KEY = "specialpages-theme";
 
   function applyTheme(theme) {
@@ -299,39 +298,6 @@
     });
   }
 
-  function initContactForm() {
-    const form = document.getElementById("contact-form");
-    const message = document.getElementById("form-message");
-    if (!form || !message) return;
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      if (!CONTACT_EMAIL || CONTACT_EMAIL.includes("contato@specialpages.com")) {
-        message.textContent = "Atualize o e-mail de destino no arquivo script.js (CONTACT_EMAIL).";
-        return;
-      }
-
-      const data = new FormData(form);
-      const nome = String(data.get("nome") || "");
-      const email = String(data.get("email") || "");
-      const tipo = String(data.get("tipo") || "");
-      const mensagem = String(data.get("mensagem") || "");
-
-      const subject = `Novo projeto SpecialPages - ${nome}`;
-      const body =
-        `Nome: ${nome}\n` +
-        `Email: ${email}\n` +
-        `Tipo de pagina: ${tipo}\n\n` +
-        `Objetivo:\n${mensagem}`;
-
-      const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
-      message.textContent = "Abrindo seu aplicativo de e-mail...";
-      form.reset();
-    });
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     initThemeToggle();
     initMenu();
@@ -341,6 +307,5 @@
     initHeroPointer();
     initHeroCanvas();
     initSceneDepth();
-    initContactForm();
   });
 })();
