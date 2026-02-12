@@ -4,9 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function () {
+            var canMatchMedia = typeof window.matchMedia === "function";
+            var prefersReducedMotion = canMatchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            if (prefersReducedMotion) {
+                document.documentElement.classList.add("mobile-optimized");
+            }
+        })();
+    </script>
+    <meta name="theme-color" content="#060B14">
     <title>SpecialPages</title>
     <meta name="description"
-        content="Profissionalize sua presença digital com sites, blogs e landing pages focados em resultados e clareza.">
+        content="Profissionalize sua presença digital com projetos institucionais, landing page/promocional e portfólio focados em resultados e clareza.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -21,13 +32,14 @@
     <header class="topbar">
         <div class="topbar__inner">
             <a class="brand" href="#inicio">
-                <img class="brand__mark" src="/assets/portfolio/logo.png" alt="Simbolo SpecialPages" loading="eager">
+                <img class="brand__mark" src="/assets/portfolio/logo.png" alt="Simbolo SpecialPages" loading="eager"
+                    decoding="async" fetchpriority="high" width="46" height="46">
             </a>
-            <nav id="primary-nav" aria-label="Navegacao principal">
-                <a href="#inicio">Inicio</a>
-                <a href="#servicos">Servicos</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#processo">Processo</a>
+            <nav id="primary-nav" aria-label="Navegação principal">
+                <a href="#inicio">Início</a>
+                <a href="#servicos">Serviços</a>
+                <a href="#portfolio">Portfólio</a>
+                <a href="#planos">Planos</a>
                 <a href="#contato">Contato</a>
             </nav>
             <div class="topbar__actions">
@@ -52,7 +64,7 @@
                         <span>sua marca merece uma presença digital.</span>
                     </h1>
                     <p class="hero__lead">
-                        Criamos Landing Pages, Blogs e Sites Institucionais focados em clareza e conversão.
+                        Criamos soluções em formato Institucional, Landing page / promocional e Portfólio, focadas em clareza e conversão.
                     </p>
                     <div class="hero__actions">
                         <a class="btn" href="#contato">Quero profissionalizar meu negócio</a>
@@ -63,12 +75,6 @@
                         <span>Conteúdo que Conecta</span>
                         <span>Resultados Reais</span>
                     </div>
-                </div>
-
-                <div class="hero-floating" aria-hidden="true">
-                    <div class="floating-badge floating-badge--a">Clareza Visual</div>
-                    <div class="floating-badge floating-badge--b">Navegação Intuitiva</div>
-                    <div class="floating-badge floating-badge--c">Foco no seu Cliente</div>
                 </div>
             </div>
         </section>
@@ -83,11 +89,10 @@
                 <div class="services__layout reveal">
                     <div class="section-head">
                         <p class="section-kicker">Serviços Profissionais</p>
-                        <h2>Sua empresa merece um site que transmita confiança e autoridade em cada detalhe.</h2>
+                        <h2>Cuidamos da hospedagem, do domínio e da performance.</h2>
                     </div>
                     <p class="services__description">
-                        Desenvolvemos experiências digitais sob medida para destacar seu posicionamento, fortalecer
-                        sua marca e converter visitantes em clientes.
+                        Nós cuidamos de tudo para sua presença digital para você focar no crescimento da sua marca com tranquilidade.
                     </p>
                     <div class="services__image-placeholder" aria-label="Espaço para inserir imagem">
                         <span class="logo-orbit logo-orbit--outer" aria-hidden="true"></span>
@@ -95,7 +100,8 @@
                         <span class="logo-particle logo-particle--one" aria-hidden="true"></span>
                         <span class="logo-particle logo-particle--two" aria-hidden="true"></span>
                         <span class="logo-particle logo-particle--three" aria-hidden="true"></span>
-                        <img src="/assets/portfolio/logo.png" alt="Logo SpecialPages">
+                        <img src="/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy" decoding="async"
+                            width="320" height="320">
                     </div>
                 </div>
             </div>
@@ -117,14 +123,15 @@
                     <article class="project-card tilt reveal" data-tilt>
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="/assets/portfolio/site-institucional.png"
-                                alt="Preview do projeto Atlas Corporate" loading="lazy">
-                            <span class="project-media__badge">Site Institucional</span>
+                            <img class="project-media__img" src="/assets/portfolio/site-advogado.png"
+                                alt="Preview do projeto Atlas Corporate" loading="lazy" decoding="async"
+                                fetchpriority="low" width="454" height="466">
+                            <span class="project-media__badge">Site Profissional</span>
                         </figure>
                         <div class="project-card__content">
-                            <p class="project-card__tag">Site Institucional & Blogs</p>
-                            <h3>Atlas Corporate</h3>
-                            <p>Presença sólida para empresas que buscam credibilidade e autoridade através de conteúdo.
+                            <p class="project-card__tag">Institucional, Landing page / promocional, Portfólio</p>
+                            <h3>JurisAlmeida</h3>
+                            <p>Landing page profissional para apresentar o advogado, suas áreas de atuação e depoimentos de clientes.
                             </p>
                         </div>
                     </article>
@@ -132,14 +139,15 @@
                     <article class="project-card tilt reveal" data-tilt>
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="/assets/portfolio/site-blog.png"
-                                alt="Preview do projeto Funnel Spark" loading="lazy">
-                            <span class="project-media__badge">Blog</span>
+                            <img class="project-media__img" src="/assets/portfolio/site-landing-promocional.jpg"
+                                alt="Preview do projeto Funnel Spark" loading="lazy" decoding="async"
+                                fetchpriority="low" width="1024" height="1536">
+                            <span class="project-media__badge">Landing page / promocional</span>
                         </figure>
                         <div class="project-card__content">
-                            <p class="project-card__tag">Página de Blog</p>
+                            <p class="project-card__tag">Landing page / promocional</p>
                             <h3>SuaReceita</h3>
-                            <p>Mostra receitas em destaque e as mais recentes com foto, e ainda oferece cardápio da semana, dicas e uma lista de compras pra baixar.
+                            <p>Página enxuta para campanhas e ofertas, com foco em conversão e captação de leads.
                             </p>
                         </div>
                     </article>
@@ -147,8 +155,9 @@
                     <article class="project-card tilt reveal" data-tilt>
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="/assets/portfolio/site-especialistas.png"
-                                alt="Preview do projeto Authority One" loading="lazy">
+                            <img class="project-media__img" src="/assets/portfolio/site-especialistas.jpg"
+                                alt="Preview do projeto Authority One" loading="lazy" decoding="async"
+                                fetchpriority="low" width="1150" height="575">
                             <span class="project-media__badge">Especialistas</span>
                         </figure>
                         <div class="project-card__content">
@@ -166,45 +175,85 @@
         <section class="impact-banner reveal" aria-label="Banner de impacto">
             <div class="container impact-banner__inner">
                 <p>O sucesso do seu próximo projeto começa com uma presença digital profissional e bem estruturada.</p>
-                <a class="btn" href="#contato">Solicitar um Orçamento</a>
+                <a class="btn" href="#contato">Consultar planos</a>
             </div>
         </section>
 
         
-        <section class="process" id="processo" data-scene>
-            <div class="section-scene section-scene--process" aria-hidden="true">
-                <span class="shape shape--orb shape--process-a" data-shape data-depth="10"></span>
-                <span class="shape shape--ring shape--process-b" data-shape data-depth="8"></span>
+
+
+
+        <section class="plans" id="planos" data-scene>
+            <div class="section-scene section-scene--plans" aria-hidden="true">
+                <span class="shape shape--orb shape--plans-a" data-shape data-depth="11"></span>
+                <span class="shape shape--ring shape--plans-b" data-shape data-depth="9"></span>
+                <span class="shape shape--orb shape--plans-c" data-shape data-depth="7"></span>
             </div>
             <div class="container">
                 <div class="section-head reveal">
-                    <p class="section-kicker">Nossa Metodologia</p>
-                    <h2>Transparência e agilidade na criação do seu novo site.</h2>
+                    <p class="section-kicker">Planos</p>
+                    <h2>Quatro planos em disputa pelo crescimento da sua marca.</h2>
                 </div>
-                <div class="process__grid">
-                    <article class="process-step reveal tilt" data-tilt>
-                        <p>01</p>
-                        <h3>Entendimento</h3>
-                        <span>Reunião inicial para alinhar seus objetivos e público-alvo com clareza.</span>
+                <p class="plans__intro reveal">Compare os formatos, escolha seu ritmo e evolua sem complicação. O Prime lidera como nosso plano número 1 de vendas.</p>
+                <div class="plans__arena">
+                    <article class="plan-card plan-card--prime reveal tilt" data-tilt>
+                        <p class="plan-card__badge">Nº 1 em vendas</p>
+                        <h3>Prime</h3>
+                        <p class="plan-card__price">R$ 150 <span>/mês</span></p>
+                        <ul class="plan-card__list">
+                            <li>Landing Page sem custo</li>
+                            <li>Entrega em até 24 horas</li>
+                            <li>Até 3 seções extras inclusas</li>
+                            <li>Hospedagem</li>
+                            <li>Domínio</li>
+                            <li>Manutenção</li>
+                            <li>Suporte prioritário</li>
+                        </ul>
+                        <a class="btn plan-card__cta" href="#contato">Quero o Prime</a>
                     </article>
-                    <article class="process-step reveal tilt" data-tilt>
-                        <p>02</p>
-                        <h3>Planejamento</h3>
-                        <span>Desenho da estrutura do site focado na melhor experiência para o cliente.</span>
+
+                    <article class="plan-card plan-card--scale reveal tilt" data-tilt>
+                        <p class="plan-card__rank">Top 2</p>
+                        <h3>Scale</h3>
+                        <p class="plan-card__price">R$ 250 <span>/mês</span></p>
+                        <ul class="plan-card__list">
+                            <li>Landing Page sem custo de setup</li>
+                            <li>Hospedagem inclusa</li>
+                            <li>Domínio incluso</li>
+                            <li>SSL + performance</li>
+                            <li>Suporte em horário comercial</li>
+                            <li>Entrega em até 7 dias úteis</li>
+                        </ul>
+                        <a class="btn btn--ghost plan-card__cta" href="#contato">Escalar com Scale</a>
                     </article>
-                    <article class="process-step reveal tilt" data-tilt>
-                        <p>03</p>
-                        <h3>Desenvolvimento</h3>
-                        <span>Criação do design e código com as tecnologias mais modernas do mercado.</span>
+
+                    <article class="plan-card plan-card--launch reveal tilt" data-tilt>
+                        <p class="plan-card__rank">Top 3</p>
+                        <h3>Launch</h3>
+                        <p class="plan-card__price">R$ 350 <span>/mês</span></p>
+                        <ul class="plan-card__list">
+                            <li>1 Landing Page</li>
+                            <li>Hospedagem inclusa</li>
+                            <li>Suporte em horário comercial</li>
+                            <li>Entrega em até 7 dias úteis</li>
+                        </ul>
+                        <a class="btn btn--ghost plan-card__cta" href="#contato">Quero Launch</a>
                     </article>
-                    <article class="process-step reveal tilt" data-tilt>
-                        <p>04</p>
-                        <h3>Suporte e Entrega</h3>
-                        <span>Publicação do projeto com acompanhamento para garantir o sucesso inicial.</span>
+
+                    <article class="plan-card plan-card--start reveal tilt" data-tilt>
+                        <p class="plan-card__rank">Top 4</p>
+                        <h3>Start</h3>
+                        <p class="plan-card__price">R$ 500 <span>pagamento único</span></p>
+                        <ul class="plan-card__list">
+                            <li>1 Landing Page</li>
+                            <li>Entrega em até 7 dias úteis</li>
+                        </ul>
+                        <a class="btn btn--ghost plan-card__cta" href="#contato">Começar no Start</a>
                     </article>
                 </div>
             </div>
         </section>
+
 
         <section class="contact" id="contato" data-scene>
             <div class="section-scene section-scene--contact" aria-hidden="true">
@@ -215,24 +264,24 @@
             <div class="container contact__grid">
                 <div class="contact__content reveal tilt" data-tilt>
                     <p class="section-kicker">Contato Direto</p>
-                    <h2>Fale comigo por WhatsApp ou Instagram.</h2>
-                    <p>Use o canal que preferir para tirar dúvidas e pedir orçamento para o seu próximo projeto.</p>
+                    <h2>Fale conosco por WhatsApp ou Instagram.</h2>
+                    <p>Use o canal que preferir para tirar dúvidas e escolher o plano ideal para o seu próximo projeto.</p>
                     <div class="contact__highlights">
                         <span>Resposta Rápida</span>
                         <span>Atendimento Personalizado</span>
-                        <span>Orçamento Sem Complicação</span>
+                        <span>Planos Sem Complicação</span>
                     </div>
                 </div>
 
                 <div class="contact-channels reveal" aria-label="Canais de contato">
                     <a class="contact-channel contact-channel--whatsapp"
-                        href="https://wa.me/5581985969168?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento."
+                        href="https://wa.me/5581985969168?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20quero%20conhecer%20os%20planos."
                         target="_blank" rel="noopener noreferrer">
                         <div class="contact-channel__top">
                             <span class="contact-channel__icon" aria-hidden="true">
                                 <!-- Suba sua logo em public/assets/portfolio/whatsapp-logo.svg -->
                                 <img class="contact-channel__icon-image" src="/assets/portfolio/whatsapp-logo-site.png"
-                                    alt="">
+                                    alt="" loading="lazy" decoding="async" width="24" height="24">
                             </span>
                             <span class="contact-channel__pill">Online no WhatsApp</span>
                         </div>
@@ -266,13 +315,15 @@
 
     <footer class="footer">
         <div class="container footer__inner">
-            <img class="footer__logo" src="/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy">
+            <img class="footer__logo" src="/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy"
+                decoding="async" width="120" height="120">
             <p>SpecialPages © 2026. Profissionalizando marcas com sites de alto padrão.</p>
             <a href="#inicio">Voltar ao topo</a>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 
 </html>
+
