@@ -4,17 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#060B14">
     <script>
         (function () {
+            var storageKey = "specialpages-theme";
             var canMatchMedia = typeof window.matchMedia === "function";
             var prefersReducedMotion = canMatchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            var hasCoarsePointer = canMatchMedia && window.matchMedia("(hover: none), (pointer: coarse)").matches;
+            var prefersLight = canMatchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+            var prefersReducedData = typeof navigator !== "undefined" && navigator.connection && navigator.connection.saveData === true;
+            var storedTheme = "";
 
-            if (prefersReducedMotion) {
+            try {
+                storedTheme = window.localStorage.getItem(storageKey) || "";
+            } catch (error) {
+                storedTheme = "";
+            }
+
+            var initialTheme = storedTheme === "light" || storedTheme === "dark"
+                ? storedTheme
+                : (prefersLight ? "light" : "dark");
+
+            document.documentElement.setAttribute("data-theme", initialTheme);
+
+            if (prefersReducedMotion || prefersReducedData || hasCoarsePointer) {
                 document.documentElement.classList.add("mobile-optimized");
+            }
+
+            var themeMeta = document.querySelector('meta[name="theme-color"]');
+            if (themeMeta) {
+                themeMeta.setAttribute("content", initialTheme === "light" ? "#F7FAFF" : "#060B14");
             }
         })();
     </script>
-    <meta name="theme-color" content="#060B14">
     <title>SpecialPages</title>
     <meta name="description"
         content="Profissionalize sua presença digital com projetos institucionais, landing page/promocional e portfólio focados em resultados e clareza.">
@@ -64,7 +86,8 @@
                         <span>sua marca merece uma presença digital.</span>
                     </h1>
                     <p class="hero__lead">
-                        Criamos soluções em formato Institucional, Landing page / promocional e Portfólio, focadas em clareza e conversão.
+                        Criamos soluções em formato Institucional, Landing page / promocional e Portfólio, focadas em
+                        clareza e conversão.
                     </p>
                     <div class="hero__actions">
                         <a class="btn" href="#contato">Quero profissionalizar meu negócio</a>
@@ -92,7 +115,8 @@
                         <h2>Cuidamos da hospedagem, do domínio e da performance.</h2>
                     </div>
                     <p class="services__description">
-                        Nós cuidamos de tudo para sua presença digital para você focar no crescimento da sua marca com tranquilidade.
+                        Nós cuidamos de tudo na sua presença digital para você focar no crescimento da sua marca com
+                        tranquilidade.
                     </p>
                     <div class="services__image-placeholder" aria-label="Espaço para inserir imagem">
                         <span class="logo-orbit logo-orbit--outer" aria-hidden="true"></span>
@@ -106,7 +130,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="portfolio" id="portfolio" data-scene>
             <div class="section-scene section-scene--portfolio" aria-hidden="true">
                 <span class="shape shape--ring shape--portfolio-a" data-shape data-depth="12"></span>
@@ -131,7 +155,8 @@
                         <div class="project-card__content">
                             <p class="project-card__tag">Institucional, Landing page / promocional, Portfólio</p>
                             <h3>JurisAlmeida</h3>
-                            <p>Landing page profissional para apresentar o advogado, suas áreas de atuação e depoimentos de clientes.
+                            <p>Landing page profissional para apresentar o advogado, suas áreas de atuação e depoimentos
+                                de clientes.
                             </p>
                         </div>
                     </article>
@@ -179,7 +204,7 @@
             </div>
         </section>
 
-        
+
 
 
 
@@ -194,7 +219,8 @@
                     <p class="section-kicker">Planos</p>
                     <h2>Quatro planos em disputa pelo crescimento da sua marca.</h2>
                 </div>
-                <p class="plans__intro reveal">Compare os formatos, escolha seu ritmo e evolua sem complicação. O Prime lidera como nosso plano número 1 de vendas.</p>
+                <p class="plans__intro reveal">Compare os formatos, escolha seu ritmo e evolua sem complicação. O Prime
+                    lidera como nosso plano número 1 de vendas.</p>
                 <div class="plans__arena">
                     <article class="plan-card plan-card--prime reveal tilt" data-tilt>
                         <p class="plan-card__badge">Nº 1 em vendas</p>
@@ -265,7 +291,8 @@
                 <div class="contact__content reveal tilt" data-tilt>
                     <p class="section-kicker">Contato Direto</p>
                     <h2>Fale conosco por WhatsApp ou Instagram.</h2>
-                    <p>Use o canal que preferir para tirar dúvidas e escolher o plano ideal para o seu próximo projeto.</p>
+                    <p>Use o canal que preferir para tirar dúvidas e escolher o plano ideal para o seu próximo projeto.
+                    </p>
                     <div class="contact__highlights">
                         <span>Resposta Rápida</span>
                         <span>Atendimento Personalizado</span>
@@ -326,4 +353,3 @@
 </body>
 
 </html>
-

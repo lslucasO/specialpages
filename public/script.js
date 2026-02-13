@@ -1,12 +1,44 @@
 (() => {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const shouldReduceEffects = prefersReducedMotion;
+  const prefersReducedData = typeof navigator !== "undefined" && navigator.connection && navigator.connection.saveData === true;
+  const hasCoarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  const shouldReduceEffects =
+    prefersReducedMotion ||
+    prefersReducedData ||
+    hasCoarsePointer ||
+    document.documentElement.classList.contains("mobile-optimized");
   const THEME_STORAGE_KEY = "specialpages-theme";
+  const SYSTEM_THEME_QUERY = window.matchMedia("(prefers-color-scheme: light)");
+  const THEME_META_COLORS = {
+    dark: "#060B14",
+    light: "#F7FAFF",
+  };
+
+  function readStoredTheme() {
+    try {
+      return window.localStorage.getItem(THEME_STORAGE_KEY) || "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function writeStoredTheme(theme) {
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (error) {
+      // no-op when storage is unavailable
+    }
+  }
 
   function applyTheme(theme) {
     const root = document.documentElement;
     const normalizedTheme = theme === "light" ? "light" : "dark";
     root.setAttribute("data-theme", normalizedTheme);
+
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.setAttribute("content", THEME_META_COLORS[normalizedTheme]);
+    }
 
     const themeToggle = document.getElementById("theme-toggle");
     if (themeToggle) {
@@ -21,26 +53,38 @@
 
   function initThemeToggle() {
     const themeToggle = document.getElementById("theme-toggle");
-    let storedTheme = "";
+    const storedTheme = readStoredTheme();
+    const rootTheme = document.documentElement.getAttribute("data-theme");
+    const hasStoredTheme = storedTheme === "light" || storedTheme === "dark";
+    let hasManualThemeOverride = hasStoredTheme;
+    const initialTheme = hasStoredTheme
+      ? storedTheme
+      : rootTheme === "light" || rootTheme === "dark"
+      ? rootTheme
+      : SYSTEM_THEME_QUERY.matches
+      ? "light"
+      : "dark";
 
-    try {
-      storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY) || "";
-    } catch (error) {
-      storedTheme = "";
+    applyTheme(initialTheme);
+
+    const handleSystemThemeChange = (event) => {
+      if (hasManualThemeOverride) return;
+      applyTheme(event.matches ? "light" : "dark");
+    };
+
+    if (typeof SYSTEM_THEME_QUERY.addEventListener === "function") {
+      SYSTEM_THEME_QUERY.addEventListener("change", handleSystemThemeChange);
+    } else if (typeof SYSTEM_THEME_QUERY.addListener === "function") {
+      SYSTEM_THEME_QUERY.addListener(handleSystemThemeChange);
     }
-
-    applyTheme(storedTheme === "light" ? "light" : "dark");
 
     if (!themeToggle) return;
     themeToggle.addEventListener("click", () => {
       const currentTheme = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
       applyTheme(nextTheme);
-      try {
-        window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
-      } catch (error) {
-        // no-op when storage is unavailable
-      }
+      writeStoredTheme(nextTheme);
+      hasManualThemeOverride = true;
     });
   }
 
@@ -102,7 +146,7 @@
     const items = document.querySelectorAll(".reveal");
     if (!items.length) return;
 
-    if (shouldReduceEffects || prefersReducedMotion || !("IntersectionObserver" in window)) {
+    if (shouldReduceEffects || !("IntersectionObserver" in window)) {
       items.forEach((item) => item.classList.add("is-visible"));
       return;
     }
@@ -144,7 +188,7 @@
       window.requestAnimationFrame(step);
     }
 
-    if (shouldReduceEffects || prefersReducedMotion || !("IntersectionObserver" in window)) {
+    if (shouldReduceEffects || !("IntersectionObserver" in window)) {
       counters.forEach((counter) => {
         counter.textContent = counter.dataset.counter || "0";
       });
