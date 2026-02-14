@@ -1,14 +1,12 @@
 (() => {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const prefersReducedData = typeof navigator !== "undefined" && navigator.connection && navigator.connection.saveData === true;
-  const hasCoarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   const shouldReduceEffects =
     prefersReducedMotion ||
     prefersReducedData ||
-    hasCoarsePointer ||
     document.documentElement.classList.contains("mobile-optimized");
   const THEME_STORAGE_KEY = "specialpages-theme";
-  const SYSTEM_THEME_QUERY = window.matchMedia("(prefers-color-scheme: light)");
+  const THEME_MANUAL_STORAGE_KEY = "specialpages-theme-manual";
   const THEME_META_COLORS = {
     dark: "#060B14",
     light: "#F7FAFF",
@@ -22,9 +20,18 @@
     }
   }
 
+  function hasManualThemePreference() {
+    try {
+      return window.localStorage.getItem(THEME_MANUAL_STORAGE_KEY) === "1";
+    } catch (error) {
+      return false;
+    }
+  }
+
   function writeStoredTheme(theme) {
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+      window.localStorage.setItem(THEME_MANUAL_STORAGE_KEY, "1");
     } catch (error) {
       // no-op when storage is unavailable
     }
@@ -54,29 +61,16 @@
   function initThemeToggle() {
     const themeToggle = document.getElementById("theme-toggle");
     const storedTheme = readStoredTheme();
+    const hasManualTheme = hasManualThemePreference();
     const rootTheme = document.documentElement.getAttribute("data-theme");
-    const hasStoredTheme = storedTheme === "light" || storedTheme === "dark";
-    let hasManualThemeOverride = hasStoredTheme;
+    const hasStoredTheme = hasManualTheme && (storedTheme === "light" || storedTheme === "dark");
     const initialTheme = hasStoredTheme
       ? storedTheme
       : rootTheme === "light" || rootTheme === "dark"
       ? rootTheme
-      : SYSTEM_THEME_QUERY.matches
-      ? "light"
-      : "dark";
+      : "light";
 
     applyTheme(initialTheme);
-
-    const handleSystemThemeChange = (event) => {
-      if (hasManualThemeOverride) return;
-      applyTheme(event.matches ? "light" : "dark");
-    };
-
-    if (typeof SYSTEM_THEME_QUERY.addEventListener === "function") {
-      SYSTEM_THEME_QUERY.addEventListener("change", handleSystemThemeChange);
-    } else if (typeof SYSTEM_THEME_QUERY.addListener === "function") {
-      SYSTEM_THEME_QUERY.addListener(handleSystemThemeChange);
-    }
 
     if (!themeToggle) return;
     themeToggle.addEventListener("click", () => {
@@ -84,8 +78,65 @@
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
       applyTheme(nextTheme);
       writeStoredTheme(nextTheme);
-      hasManualThemeOverride = true;
     });
+  }
+
+  function initSiteLoader() {
+    const body = document.body;
+    const loader = document.getElementById("site-loader");
+    if (!body) return;
+
+    if (!loader) {
+      body.classList.remove("is-loading");
+      return;
+    }
+
+    const minVisibleTime = shouldReduceEffects ? 220 : 960;
+    const fadeDuration = shouldReduceEffects ? 0 : 460;
+    const getNow = () =>
+      window.performance && typeof window.performance.now === "function"
+        ? window.performance.now()
+        : Date.now();
+    const startTime = getNow();
+    let hasScheduledExit = false;
+    let hasExited = false;
+
+    const removeLoader = () => {
+      if (loader.parentNode) {
+        loader.parentNode.removeChild(loader);
+      }
+    };
+
+    const exitLoader = () => {
+      if (hasExited) return;
+      hasExited = true;
+      body.classList.remove("is-loading");
+      loader.classList.add("is-leaving");
+
+      if (fadeDuration === 0) {
+        removeLoader();
+        return;
+      }
+
+      window.setTimeout(removeLoader, fadeDuration + 80);
+    };
+
+    const scheduleExit = () => {
+      if (hasScheduledExit) return;
+      hasScheduledExit = true;
+
+      const elapsed = getNow() - startTime;
+      const waitTime = Math.max(0, minVisibleTime - elapsed);
+      window.setTimeout(exitLoader, waitTime);
+    };
+
+    if (document.readyState === "complete") {
+      scheduleExit();
+      return;
+    }
+
+    window.addEventListener("load", scheduleExit, { once: true });
+    window.setTimeout(scheduleExit, shouldReduceEffects ? 600 : 2400);
   }
 
   function initMenu() {
@@ -207,6 +258,110 @@
     );
 
     counters.forEach((counter) => observer.observe(counter));
+  }
+
+  function initMetricsChartInteractivity() {
+    const chart = document.querySelector(".metrics__chart");
+    if (!chart) return;
+
+    const detail = document.getElementById("metrics-chart-detail");
+    const months = Array.from(chart.querySelectorAll(".metrics__month"));
+    if (!months.length) return;
+
+    const getBarValue = (bar) => {
+      const inlineValue = bar.style.getPropertyValue("--bar-value");
+      const rawValue = inlineValue || window.getComputedStyle(bar).getPropertyValue("--bar-value");
+      const parsedValue = Number.parseFloat(rawValue);
+      return Number.isFinite(parsedValue) ? parsedValue : 0;
+    };
+
+    const formatValue = (value) => Number(value).toLocaleString("pt-BR");
+
+    const clearSelection = () => {
+      months.forEach((month) => {
+        month.classList.remove("is-selected");
+        month.querySelectorAll(".metrics__bar").forEach((bar) => {
+          bar.classList.remove("is-selected", "is-context");
+          bar.setAttribute("aria-pressed", "false");
+        });
+      });
+    };
+
+    const activateBar = (bar, shouldFocus = false) => {
+      const month = bar.closest(".metrics__month");
+      if (!month) return;
+
+      const monthLabel = month.querySelector(".metrics__month-label")?.textContent?.trim() || "Mês";
+      const baseBar = month.querySelector(".metrics__bar--base");
+      const siteBar = month.querySelector(".metrics__bar--site");
+      if (!baseBar || !siteBar) return;
+
+      const baseValue = getBarValue(baseBar);
+      const siteValue = getBarValue(siteBar);
+      const isSiteBar = bar.classList.contains("metrics__bar--site");
+      const selectedSeries = isSiteBar ? "Com site profissional" : "Sem site estruturado";
+      const selectedValue = isSiteBar ? siteValue : baseValue;
+      const gain = siteValue - baseValue;
+      const gainPercent = baseValue > 0 ? Math.round((gain / baseValue) * 100) : 0;
+      const gainPrefix = gain >= 0 ? "+" : "-";
+      const gainPercentPrefix = gainPercent >= 0 ? "+" : "-";
+
+      clearSelection();
+      month.classList.add("is-selected");
+      bar.classList.add("is-selected");
+      bar.setAttribute("aria-pressed", "true");
+
+      const contextBar = isSiteBar ? baseBar : siteBar;
+      contextBar.classList.add("is-context");
+
+      if (detail) {
+        detail.textContent =
+          `${monthLabel} selecionado. ${selectedSeries}: ${formatValue(selectedValue)}. ` +
+          `Sem site: ${formatValue(baseValue)} | Com site: ${formatValue(siteValue)}. ` +
+          `Diferença: ${gainPrefix}${formatValue(Math.abs(gain))} (${gainPercentPrefix}${Math.abs(gainPercent)}%).`;
+      }
+
+      if (shouldFocus) {
+        bar.focus();
+      }
+    };
+
+    months.forEach((month) => {
+      const monthLabel = month.querySelector(".metrics__month-label")?.textContent?.trim() || "Mês";
+      const baseBar = month.querySelector(".metrics__bar--base");
+      const siteBar = month.querySelector(".metrics__bar--site");
+      if (!baseBar || !siteBar) return;
+
+      const setupBar = (bar, seriesLabel) => {
+        const value = getBarValue(bar);
+        bar.dataset.valueLabel = formatValue(value);
+        bar.setAttribute("tabindex", "0");
+        bar.setAttribute("role", "button");
+        bar.setAttribute("aria-pressed", "false");
+        bar.setAttribute("aria-label", `${monthLabel}: ${seriesLabel}, ${formatValue(value)} oportunidades`);
+        bar.title = `${monthLabel} - ${seriesLabel}: ${formatValue(value)}`;
+
+        bar.addEventListener("click", () => activateBar(bar));
+        bar.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          activateBar(bar, true);
+        });
+      };
+
+      setupBar(baseBar, "Sem site estruturado");
+      setupBar(siteBar, "Com site profissional");
+
+      month.addEventListener("click", (event) => {
+        if (event.target.closest(".metrics__bar")) return;
+        activateBar(siteBar);
+      });
+    });
+
+    const firstSiteBar = chart.querySelector(".metrics__month .metrics__bar--site");
+    if (firstSiteBar) {
+      activateBar(firstSiteBar);
+    }
   }
 
   function initTilt() {
@@ -495,10 +650,12 @@
   document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.classList.toggle("mobile-optimized", shouldReduceEffects);
 
+    initSiteLoader();
     initThemeToggle();
     initMenu();
     initReveal();
     initCounters();
+    initMetricsChartInteractivity();
     initTilt();
     initHeroPointer();
     initHeroCanvas();

@@ -1,33 +1,43 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#060B14">
+    <meta name="theme-color" content="#F7FAFF">
     <script>
         (function () {
             var storageKey = "specialpages-theme";
+            var manualStorageKey = "specialpages-theme-manual";
             var canMatchMedia = typeof window.matchMedia === "function";
             var prefersReducedMotion = canMatchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            var hasCoarsePointer = canMatchMedia && window.matchMedia("(hover: none), (pointer: coarse)").matches;
-            var prefersLight = canMatchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
             var prefersReducedData = typeof navigator !== "undefined" && navigator.connection && navigator.connection.saveData === true;
             var storedTheme = "";
+            var hasManualTheme = false;
 
             try {
                 storedTheme = window.localStorage.getItem(storageKey) || "";
+                hasManualTheme = window.localStorage.getItem(manualStorageKey) === "1";
             } catch (error) {
                 storedTheme = "";
+                hasManualTheme = false;
             }
 
-            var initialTheme = storedTheme === "light" || storedTheme === "dark"
+            if (!hasManualTheme && (storedTheme === "light" || storedTheme === "dark")) {
+                try {
+                    window.localStorage.removeItem(storageKey);
+                } catch (error) {
+                    // no-op when storage is unavailable
+                }
+            }
+
+            var initialTheme = hasManualTheme && (storedTheme === "light" || storedTheme === "dark")
                 ? storedTheme
-                : (prefersLight ? "light" : "dark");
+                : "light";
 
             document.documentElement.setAttribute("data-theme", initialTheme);
 
-            if (prefersReducedMotion || prefersReducedData || hasCoarsePointer) {
+            if (prefersReducedMotion || prefersReducedData) {
                 document.documentElement.classList.add("mobile-optimized");
             }
 
@@ -46,27 +56,50 @@
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <noscript>
+        <style>
+            body {
+                overflow: auto !important;
+            }
+
+            .site-loader {
+                display: none !important;
+            }
+        </style>
+    </noscript>
 </head>
 
-<body>
+<body class="is-loading">
+    <div class="site-loader" id="site-loader" role="status" aria-live="polite" aria-label="Carregando o site">
+        <div class="site-loader__panel">
+            <div class="site-loader__brand" aria-hidden="true">
+                <span class="site-loader__pulse"></span>
+                <span class="site-loader__ring"></span>
+                <img class="site-loader__logo" src="assets/portfolio/logo.png" alt="" loading="eager" decoding="async"
+                    fetchpriority="high" width="120" height="120">
+            </div>
+            <p class="site-loader__text">Carregando...</p>
+        </div>
+    </div>
+
     <div class="grain" aria-hidden="true"></div>
 
     <header class="topbar">
         <div class="topbar__inner">
             <a class="brand" href="#inicio">
-                <img class="brand__mark" src="/assets/portfolio/logo.png" alt="Simbolo SpecialPages" loading="eager"
+                <img class="brand__mark" src="assets/portfolio/logo.png" alt="Símbolo SpecialPages" loading="eager"
                     decoding="async" fetchpriority="high" width="46" height="46">
             </a>
             <nav id="primary-nav" aria-label="Navegação principal">
                 <a href="#inicio">Início</a>
-                <a href="#servicos">Serviços</a>
+                <a href="#servicos">Quem somos</a>
                 <a href="#portfolio">Portfólio</a>
                 <a href="#planos">Planos</a>
                 <a href="#contato">Contato</a>
             </nav>
             <div class="topbar__actions">
-                <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ativar modo claro"
-                    aria-pressed="false">Modo claro</button>
+                <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ativar modo escuro"
+                    aria-pressed="true">Modo escuro</button>
                 <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">Menu</button>
             </div>
         </div>
@@ -90,7 +123,7 @@
                         clareza e conversão.
                     </p>
                     <div class="hero__actions">
-                        <a class="btn" href="#contato">Quero profissionalizar meu negócio</a>
+                        <a class="btn" href="#planos">Quero profissionalizar meu negócio</a>
                         <a class="btn btn--ghost" href="#portfolio">Conhecer soluções para minha marca</a>
                     </div>
                     <div class="hero-signals">
@@ -111,25 +144,81 @@
             <div class="container">
                 <div class="services__layout reveal">
                     <div class="section-head">
-                        <p class="section-kicker">Serviços Profissionais</p>
-                        <h2>Cuidamos da hospedagem, do domínio e da performance.</h2>
+                        <p class="section-kicker">Quem somos</p>
+                        <h2>Somos uma empresa focada na criação de sites para sua marca.</h2>
                     </div>
                     <p class="services__description">
-                        Nós cuidamos de tudo na sua presença digital para você focar no crescimento da sua marca com
-                        tranquilidade.
+                        Criamos sites que unem estratégia, design e performance para apresentar sua marca com clareza,
+                        autoridade e potencial de crescimento.
                     </p>
-                    <div class="services__image-placeholder" aria-label="Espaço para inserir imagem">
+                    <div class="services__image-placeholder" aria-label="Apresentação da marca SpecialPages">
                         <span class="logo-orbit logo-orbit--outer" aria-hidden="true"></span>
                         <span class="logo-orbit logo-orbit--inner" aria-hidden="true"></span>
                         <span class="logo-particle logo-particle--one" aria-hidden="true"></span>
                         <span class="logo-particle logo-particle--two" aria-hidden="true"></span>
                         <span class="logo-particle logo-particle--three" aria-hidden="true"></span>
-                        <img src="/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy" decoding="async"
+                        <img src="assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy" decoding="async"
                             width="320" height="320">
                     </div>
                 </div>
             </div>
         </section>
+
+
+        <section class="differential" id="diferenciais" data-scene>
+            <div class="section-scene section-scene--differential" aria-hidden="true">
+                <span class="shape shape--ring shape--differential-a" data-shape data-depth="12"></span>
+                <span class="shape shape--orb shape--differential-b" data-shape data-depth="10"></span>
+                <span class="shape shape--orb shape--differential-c" data-shape data-depth="8"></span>
+            </div>
+            <div class="container">
+                <div class="differential__panel reveal">
+                    <div class="section-head differential__head">
+                        <p class="section-kicker">Nosso diferencial</p>
+                        <h2>Nós cuidamos de tudo.</h2>
+                    </div>
+                    <p class="differential__lead">
+                        Você foca no negócio. A gente entrega a operação digital pronta.
+                    </p>
+                    <div class="differential__versus" aria-label="Entrega completa da SpecialPages">
+                        <article class="differential-card differential-card--special">
+                            <p class="differential-card__tag">SpecialPages</p>
+                            <h3>Tudo pronto para você não se preocupar.</h3>
+                            <ul>
+                                <li>Hospedagem ativa.</li>
+                                <li>Domínio conectado.</li>
+                                <li>Performance ajustada.</li>
+                            </ul>
+                            <p class="differential-card__closing">Sem retrabalho. Sem etapa perdida.</p>
+                        </article>
+                        <div class="differential__visual" aria-hidden="true">
+                            <span class="differential-orbit__ring differential-orbit__ring--outer"></span>
+                            <span class="differential-orbit__ring differential-orbit__ring--inner"></span>
+                            <span class="differential-orbit__core">SP</span>
+                            <span class="differential-orbit__node differential-orbit__node--hosting">Hospedagem</span>
+                            <span class="differential-orbit__node differential-orbit__node--domain">Domínio</span>
+                            <span class="differential-orbit__node differential-orbit__node--speed">Performance</span>
+                            <span class="differential-orbit__node differential-orbit__node--brand">Marca</span>
+                        </div>
+                    </div>
+                    <div class="differential__pillars" aria-label="Pilares da entrega SpecialPages">
+                        <article class="differential-pillar">
+                            <h3>Velocidade real</h3>
+                            <p>Carrega rápido em qualquer tela.</p>
+                        </article>
+                        <article class="differential-pillar">
+                            <h3>Presença forte</h3>
+                            <p>Design que transmite autoridade.</p>
+                        </article>
+                        <article class="differential-pillar">
+                            <h3>Suporte que resolve</h3>
+                            <p>Ajustes e evolução sem fricção.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <section class="portfolio" id="portfolio" data-scene>
             <div class="section-scene section-scene--portfolio" aria-hidden="true">
@@ -140,72 +229,172 @@
             <div class="container">
                 <div class="section-head reveal">
                     <p class="section-kicker">Soluções Sob Medida</p>
-                    <h2>Formatos pensados para o momento atual da sua empresa.</h2>
+                    <h2>Formatos personalizados para o seu negócio.</h2>
                 </div>
 
                 <div class="portfolio__grid">
-                    <article class="project-card tilt reveal" data-tilt>
+                    
+
+                    <a class="project-card tilt reveal" data-tilt href="https://institucional.specialpages.com.br"
+                        target="_blank" rel="noopener noreferrer" aria-label="Abrir formato Institucional">
                         <figure class="project-media">
                             <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="/assets/portfolio/site-advogado.png"
+                            <img class="project-media__img" src="assets/portfolio/site-institucional.png"
+                                alt="Preview do projeto Funnel Spark" loading="lazy" decoding="async"
+                                fetchpriority="low" width="1024" height="1536">
+                            <span class="project-media__badge">Institucional</span>
+                        </figure>
+                        <div class="project-card__content">
+                            <p class="project-card__tag">Site Institucional</p>
+                            <h3>Vértice Soluções</h3>
+                            <p>Site institucional moderno e objetivo, criado para apresentar sua empresa com clareza e profissionalismo.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a class="project-card tilt reveal" data-tilt href="https://promocional.specialpages.com.br"
+                        target="_blank" rel="noopener noreferrer" aria-label="Abrir formato Landing page">
+                        <figure class="project-media">
+                            <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
+                            <img class="project-media__img" src="assets/portfolio/site-promocional.png"
+                                alt="Preview do projeto Authority One" loading="lazy" decoding="async"
+                                fetchpriority="low" width="1150" height="575">
+                            <span class="project-media__badge">Landing page</span>
+                        </figure>
+                        <div class="project-card__content">
+                            <p class="project-card__tag">Página promocional</p>
+                            <h3>OrbitCore</h3>
+                            <p>Página para campanhas e ofertas, com foco em conversão e captação de clientes.</p>
+                        </div>
+                    </a>
+
+                    <a class="project-card tilt reveal" data-tilt href="https://advocacia-nu-six.vercel.app/"
+                        target="_blank" rel="noopener noreferrer" aria-label="Abrir formato Portfólio">
+                        <figure class="project-media">
+                            <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
+                            <img class="project-media__img" src="assets/portfolio/site-advogado.png"
                                 alt="Preview do projeto Atlas Corporate" loading="lazy" decoding="async"
                                 fetchpriority="low" width="454" height="466">
                             <span class="project-media__badge">Site Profissional</span>
                         </figure>
                         <div class="project-card__content">
-                            <p class="project-card__tag">Institucional, Landing page / promocional, Portfólio</p>
-                            <h3>JurisAlmeida</h3>
-                            <p>Landing page profissional para apresentar o advogado, suas áreas de atuação e depoimentos
+                            <p class="project-card__tag">Portfólios</p>
+                            <h3>Rafael Mendes - Advocacia</h3>
+                            <p>Site portfólio para apresentar o profissional, suas áreas de atuação e depoimentos
                                 de clientes.
                             </p>
                         </div>
-                    </article>
-
-                    <article class="project-card tilt reveal" data-tilt>
-                        <figure class="project-media">
-                            <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="/assets/portfolio/site-landing-promocional.jpg"
-                                alt="Preview do projeto Funnel Spark" loading="lazy" decoding="async"
-                                fetchpriority="low" width="1024" height="1536">
-                            <span class="project-media__badge">Landing page / promocional</span>
-                        </figure>
-                        <div class="project-card__content">
-                            <p class="project-card__tag">Landing page / promocional</p>
-                            <h3>SuaReceita</h3>
-                            <p>Página enxuta para campanhas e ofertas, com foco em conversão e captação de leads.
-                            </p>
-                        </div>
-                    </article>
-
-                    <article class="project-card tilt reveal" data-tilt>
-                        <figure class="project-media">
-                            <!-- Troque o arquivo abaixo pela imagem real do seu projeto -->
-                            <img class="project-media__img" src="/assets/portfolio/site-especialistas.jpg"
-                                alt="Preview do projeto Authority One" loading="lazy" decoding="async"
-                                fetchpriority="low" width="1150" height="575">
-                            <span class="project-media__badge">Especialistas</span>
-                        </figure>
-                        <div class="project-card__content">
-                            <p class="project-card__tag">Páginas para Especialistas</p>
-                            <h3>NutriSente</h3>
-                            <p>Destaque sua expertise e organize sua agenda com uma página profissional e elegante.</p>
-                        </div>
-                    </article>
+                    </a>
                 </div>
             </div>
         </section>
 
+        <section class="metrics" id="oportunidade" data-scene>
+            <div class="section-scene section-scene--metrics" aria-hidden="true">
+                <span class="shape shape--orb shape--metrics-a" data-shape data-depth="12"></span>
+                <span class="shape shape--orb shape--metrics-b" data-shape data-depth="10"></span>
+                <span class="shape shape--ring shape--metrics-c" data-shape data-depth="8"></span>
+            </div>
+            <div class="container">
+                <div class="metrics__layout reveal">
+                    <div class="section-head">
+                        <h2>Sem um site profissional, sua marca perde visibilidade.</h2>
+                    </div>
+                    <p class="metrics__lead">
+                        Um site vende por você 24h, gera autoridade imediata e transforma visitantes em contatos
+                        qualificados com previsibilidade.
+                    </p>
+        
 
+                    <div class="metrics__grid" aria-label="Métricas de impacto comercial">
+                        <article class="metric">
+                            <h3><span data-counter="95">0</span>%</h3>
+                            <p>Pesquisam online antes de contratar</p>
+                        </article>
+                        <article class="metric">
+                            <h3><span data-counter="24">0</span>h</h3>
+                            <p>Seu site trabalha mesmo fora do horário comercial</p>
+                        </article>
+
+    
+                    </div>
+
+                    <aside class="metrics__chart" aria-label="Gráfico comparativo de captação em seis meses">
+                        <div class="metrics__chart-head">
+                            <h3>Captação acumulada em 6 meses</h3>
+                        </div>
+                        <div class="metrics__legend">
+                            <span><i class="metrics__legend-dot metrics__legend-dot--base" aria-hidden="true"></i>Sem site estruturado</span>
+                            <span><i class="metrics__legend-dot metrics__legend-dot--site" aria-hidden="true"></i>Com site profissional</span>
+                        </div>
+                        <div class="metrics__bars" role="img"
+                            aria-label="Comparativo mensal entre captação sem site e com site profissional">
+                            <div class="metrics__month">
+                                <div class="metrics__bar-stack">
+                                    <span class="metrics__bar metrics__bar--base" style="--bar-value: 24; --delay: 0.02s;"></span>
+                                    <span class="metrics__bar metrics__bar--site" style="--bar-value: 38; --delay: 0.08s;"></span>
+                                </div>
+                                <span class="metrics__month-label">M1</span>
+                            </div>
+                            <div class="metrics__month">
+                                <div class="metrics__bar-stack">
+                                    <span class="metrics__bar metrics__bar--base" style="--bar-value: 28; --delay: 0.1s;"></span>
+                                    <span class="metrics__bar metrics__bar--site" style="--bar-value: 52; --delay: 0.16s;"></span>
+                                </div>
+                                <span class="metrics__month-label">M2</span>
+                            </div>
+                            <div class="metrics__month">
+                                <div class="metrics__bar-stack">
+                                    <span class="metrics__bar metrics__bar--base" style="--bar-value: 32; --delay: 0.18s;"></span>
+                                    <span class="metrics__bar metrics__bar--site" style="--bar-value: 64; --delay: 0.24s;"></span>
+                                </div>
+                                <span class="metrics__month-label">M3</span>
+                            </div>
+                            <div class="metrics__month">
+                                <div class="metrics__bar-stack">
+                                    <span class="metrics__bar metrics__bar--base" style="--bar-value: 35; --delay: 0.26s;"></span>
+                                    <span class="metrics__bar metrics__bar--site" style="--bar-value: 76; --delay: 0.32s;"></span>
+                                </div>
+                                <span class="metrics__month-label">M4</span>
+                            </div>
+                            <div class="metrics__month">
+                                <div class="metrics__bar-stack">
+                                    <span class="metrics__bar metrics__bar--base" style="--bar-value: 37; --delay: 0.34s;"></span>
+                                    <span class="metrics__bar metrics__bar--site" style="--bar-value: 88; --delay: 0.4s;"></span>
+                                </div>
+                                <span class="metrics__month-label">M5</span>
+                            </div>
+                            <div class="metrics__month">
+                                <div class="metrics__bar-stack">
+                                    <span class="metrics__bar metrics__bar--base" style="--bar-value: 40; --delay: 0.42s;"></span>
+                                    <span class="metrics__bar metrics__bar--site" style="--bar-value: 96; --delay: 0.48s;"></span>
+                                </div>
+                                <span class="metrics__month-label">M6</span>
+                            </div>
+                        </div>
+                        <p class="metrics__chart-detail" id="metrics-chart-detail" aria-live="polite">
+                            Clique em uma barra para ver os valores do mês selecionado.
+                        </p>
+                        <div class="metrics__trend" aria-hidden="true">
+                            <svg viewBox="0 0 320 84" preserveAspectRatio="none">
+                                <path class="metrics__trend-fill" d="M0 76 L0 62 L64 56 L128 46 L192 32 L256 18 L320 10 L320 76 Z">
+                                </path>
+                                <path class="metrics__trend-line" d="M0 62 L64 56 L128 46 L192 32 L256 18 L320 10"></path>
+                            </svg>
+                        </div>
+                        <p class="metrics__chart-foot">Diferença acumulada: +<span data-counter="182">0</span>% em
+                            oportunidades qualificadas.</p>
+                    </aside>
+                </div>
+            </div>
+        </section>
 
         <section class="impact-banner reveal" aria-label="Banner de impacto">
             <div class="container impact-banner__inner">
                 <p>O sucesso do seu próximo projeto começa com uma presença digital profissional e bem estruturada.</p>
-                <a class="btn" href="#contato">Consultar planos</a>
+                <a class="btn" href="#planos">Consultar planos</a>
             </div>
         </section>
-
-
-
 
 
         <section class="plans" id="planos" data-scene>
@@ -217,64 +406,75 @@
             <div class="container">
                 <div class="section-head reveal">
                     <p class="section-kicker">Planos</p>
-                    <h2>Quatro planos em disputa pelo crescimento da sua marca.</h2>
+                    <h2>Três planos no pódio do crescimento da sua marca.</h2>
                 </div>
-                <p class="plans__intro reveal">Compare os formatos, escolha seu ritmo e evolua sem complicação. O Prime
-                    lidera como nosso plano número 1 de vendas.</p>
+                <p class="plans__intro reveal">No topo, o Prime entrega velocidade, estrutura completa e suporte prioritário para acelerar resultado desde o primeiro dia.</p>
+                <div class="plans__impact reveal" aria-label="Impacto do plano Prime">
+                    <span>Prime entrega em até 24h.</span>
+                    <span>Suporte prioritário em toda jornada.</span>
+                    <span>Domínio, hospedagem e manutenção incluídos.</span>
+                </div>
+
                 <div class="plans__arena">
                     <article class="plan-card plan-card--prime reveal tilt" data-tilt>
-                        <p class="plan-card__badge">Nº 1 em vendas</p>
+                        <div class="plan-card__topline">
+                            <p class="plan-card__badge plan-card__badge--prime">
+                                <span class="plan-rank__medal plan-rank__medal--gold" aria-hidden="true">1</span>
+                                <span>Lugar</span>
+                            </p>
+                            <span class="plan-card__rank-note">Mais escolhido</span>
+                        </div>
                         <h3>Prime</h3>
                         <p class="plan-card__price">R$ 150 <span>/mês</span></p>
+                        
                         <ul class="plan-card__list">
-                            <li>Landing Page sem custo</li>
+                            <li>Site sem custo</li>
                             <li>Entrega em até 24 horas</li>
-                            <li>Até 3 seções extras inclusas</li>
                             <li>Hospedagem</li>
                             <li>Domínio</li>
                             <li>Manutenção</li>
-                            <li>Suporte prioritário</li>
+                            <li>Suporte</li>
                         </ul>
-                        <a class="btn plan-card__cta" href="#contato">Quero o Prime</a>
+                        <a class="btn plan-card__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfCabN1_jAuoPLPnunR5VyBMt3DT9-WhMK4iIaRUZEwdHfqvA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">Quero o Prime agora</a>
                     </article>
 
                     <article class="plan-card plan-card--scale reveal tilt" data-tilt>
-                        <p class="plan-card__rank">Top 2</p>
+                        <div class="plan-card__topline">
+                            <p class="plan-card__rank plan-card__rank--silver">
+                                <span class="plan-rank__medal plan-rank__medal--silver" aria-hidden="true">2</span>
+                                <span>Lugar</span>
+                            </p>
+                            <span class="plan-card__rank-note">Escala com previsibilidade</span>
+                        </div>
                         <h3>Scale</h3>
                         <p class="plan-card__price">R$ 250 <span>/mês</span></p>
+                        
                         <ul class="plan-card__list">
-                            <li>Landing Page sem custo de setup</li>
-                            <li>Hospedagem inclusa</li>
-                            <li>Domínio incluso</li>
-                            <li>SSL + performance</li>
-                            <li>Suporte em horário comercial</li>
-                            <li>Entrega em até 7 dias úteis</li>
+                            <li>Site</li>
+                            <li>Hospedagem </li>
+                            <li>Domínio </li>
+                            <li>Entrega em até 3 dias úteis</li>
                         </ul>
-                        <a class="btn btn--ghost plan-card__cta" href="#contato">Escalar com Scale</a>
+                        <a class="btn btn--ghost plan-card__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfCabN1_jAuoPLPnunR5VyBMt3DT9-WhMK4iIaRUZEwdHfqvA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">Quero o Scale</a>
                     </article>
 
                     <article class="plan-card plan-card--launch reveal tilt" data-tilt>
-                        <p class="plan-card__rank">Top 3</p>
+                        <div class="plan-card__topline">
+                            <p class="plan-card__rank plan-card__rank--bronze">
+                                <span class="plan-rank__medal plan-rank__medal--bronze" aria-hidden="true">3</span>
+                                <span>Lugar</span>
+                            </p>
+                            <span class="plan-card__rank-note">Entrada com estrutura</span>
+                        </div>
                         <h3>Launch</h3>
                         <p class="plan-card__price">R$ 350 <span>/mês</span></p>
+                
                         <ul class="plan-card__list">
-                            <li>1 Landing Page</li>
-                            <li>Hospedagem inclusa</li>
-                            <li>Suporte em horário comercial</li>
+                            <li>Site</li>
+                            <li>Hospedagem</li>
                             <li>Entrega em até 7 dias úteis</li>
                         </ul>
-                        <a class="btn btn--ghost plan-card__cta" href="#contato">Quero Launch</a>
-                    </article>
-
-                    <article class="plan-card plan-card--start reveal tilt" data-tilt>
-                        <p class="plan-card__rank">Top 4</p>
-                        <h3>Start</h3>
-                        <p class="plan-card__price">R$ 500 <span>pagamento único</span></p>
-                        <ul class="plan-card__list">
-                            <li>1 Landing Page</li>
-                            <li>Entrega em até 7 dias úteis</li>
-                        </ul>
-                        <a class="btn btn--ghost plan-card__cta" href="#contato">Começar no Start</a>
+                        <a class="btn btn--ghost plan-card__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfCabN1_jAuoPLPnunR5VyBMt3DT9-WhMK4iIaRUZEwdHfqvA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">Começar no Launch</a>
                     </article>
                 </div>
             </div>
@@ -290,9 +490,8 @@
             <div class="container contact__grid">
                 <div class="contact__content reveal tilt" data-tilt>
                     <p class="section-kicker">Contato Direto</p>
-                    <h2>Fale conosco por WhatsApp ou Instagram.</h2>
-                    <p>Use o canal que preferir para tirar dúvidas e escolher o plano ideal para o seu próximo projeto.
-                    </p>
+                    <h2>Fale conosco por Instagram ou Email.</h2>
+                    <p>Use o canal que preferir para tirar dúvidas e escolher o plano ideal para o seu próximo projeto.</p>
                     <div class="contact__highlights">
                         <span>Resposta Rápida</span>
                         <span>Atendimento Personalizado</span>
@@ -301,40 +500,51 @@
                 </div>
 
                 <div class="contact-channels reveal" aria-label="Canais de contato">
-                    <a class="contact-channel contact-channel--whatsapp"
-                        href="https://wa.me/5581985969168?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20quero%20conhecer%20os%20planos."
-                        target="_blank" rel="noopener noreferrer">
-                        <div class="contact-channel__top">
-                            <span class="contact-channel__icon" aria-hidden="true">
-                                <!-- Suba sua logo em public/assets/portfolio/whatsapp-logo.svg -->
-                                <img class="contact-channel__icon-image" src="/assets/portfolio/whatsapp-logo-site.png"
-                                    alt="" loading="lazy" decoding="async" width="24" height="24">
-                            </span>
-                            <span class="contact-channel__pill">Online no WhatsApp</span>
-                        </div>
-                        <p class="contact-channel__label">WhatsApp</p>
-                        <p class="contact-channel__value">Entre em contato!</p>
-                        <span class="contact-channel__meta">Toque para iniciar a conversa</span>
-                        <span class="contact-channel__cta">Abrir conversa</span>
-                    </a>
-                    <a class="contact-channel contact-channel--instagram" href="https://www.instagram.com/specpages/"
-                        target="_blank" rel="noopener noreferrer">
-                        <div class="contact-channel__top">
-                            <span class="contact-channel__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                                    <circle cx="12" cy="12" r="4"></circle>
-                                    <circle class="contact-channel__dot" cx="17.2" cy="6.8" r="1.1"></circle>
-                                </svg>
-                            </span>
-                            <span class="contact-channel__pill">Perfil ativo no Instagram</span>
-                        </div>
-                        <p class="contact-channel__label">Instagram</p>
-                        <p class="contact-channel__value">@specpages</p>
-                        <span class="contact-channel__meta">Envie uma mensagem no direct</span>
-                        <span class="contact-channel__cta">Abrir perfil</span>
-                    </a>
-                    <p class="contact-channels__note">Atendimento por WhatsApp e Instagram.</p>
+                    <div class="contact-channels__head">
+                        <p class="contact-channels__kicker">Nossas redes</p>
+                        <h3>Escolha o canal ideal para o que você precisa agora.</h3>
+                        <p class="contact-channels__intro">
+                            Instagram para conhecer nosso trabalho e Email para
+                            propostas completas.
+                        </p>
+                    </div>
+                    <div class="contact-channels__grid">
+                
+                        <a class="contact-channel contact-channel--instagram" href="https://www.instagram.com/specpages/"
+                            target="_blank" rel="noopener noreferrer">
+                            <div class="contact-channel__top">
+                                <span class="contact-channel__icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                                        <circle cx="12" cy="12" r="4"></circle>
+                                        <circle class="contact-channel__dot" cx="17.2" cy="6.8" r="1.1"></circle>
+                                    </svg>
+                                </span>
+                                <span class="contact-channel__pill">Perfil ativo no Instagram</span>
+                            </div>
+                            <p class="contact-channel__label">Instagram</p>
+                            <p class="contact-channel__value">@specpages</p>
+                            <span class="contact-channel__meta">Envie uma mensagem no direct</span>
+                            <span class="contact-channel__cta">Abrir perfil</span>
+                        </a>
+                        <a class="contact-channel contact-channel--email"
+                            href="mailto:contato@specialpages.com.br?subject=Contato%20pelo%20site%20SpecialPages">
+                            <div class="contact-channel__top">
+                                <span class="contact-channel__icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <rect x="3.5" y="5.5" width="17" height="13" rx="2"></rect>
+                                        <path d="M4.5 7l7.5 6 7.5-6"></path>
+                                    </svg>
+                                </span>
+                                <span class="contact-channel__pill">Atendimento por Email</span>
+                            </div>
+                            <p class="contact-channel__label">Email</p>
+                            <p class="contact-channel__value">contato@corujaintelligence.com</p>
+                            <span class="contact-channel__meta">Envie sua mensagem por email</span>
+                            <span class="contact-channel__cta">Abrir email</span>
+                        </a>
+                    </div>
+                    <p class="contact-channels__note">Atendimento por Instagram e Email.</p>
                 </div>
             </div>
         </section>
@@ -342,7 +552,7 @@
 
     <footer class="footer">
         <div class="container footer__inner">
-            <img class="footer__logo" src="/assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy"
+            <img class="footer__logo" src="assets/portfolio/logo.png" alt="Logo SpecialPages" loading="lazy"
                 decoding="async" width="120" height="120">
             <p>SpecialPages © 2026. Profissionalizando marcas com sites de alto padrão.</p>
             <a href="#inicio">Voltar ao topo</a>
@@ -353,3 +563,5 @@
 </body>
 
 </html>
+
+
